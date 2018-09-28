@@ -34,10 +34,10 @@ fprintf('You beta reorganize!!\n\n')
 
 %--Loop over subjects
 
-for i = 1:length(subjects2)
+for i = 1:length(subjects)
 
     % Define variables for individual subjects - General
-    b.curSubj   = subjects2{i};
+    b.curSubj   = subjects{i};
     b.runs      = runs;
     b.dataDir   = fullfile(dataDir, b.curSubj);
 
@@ -83,7 +83,7 @@ for i = 1:length(subjects2)
         end % end itrial
 
         catch exception
-        fprintf('There was a problem with subject %s in run %s on trial %d!!\n\n', subjects2{i},runs{irun}, itrial)
+        fprintf('There was a problem with subject %s in run %s on trial %d!!\n\n', subjects{i},runs{irun}, itrial)
         disp(exception.message);
         end % end try
     end % end irun       

@@ -33,7 +33,7 @@ runflag = 1;
 
 %--Loop over subjects
 
-for i = 2:length(subjects)
+for i = 19:length(subjects)
     
     clear b
 

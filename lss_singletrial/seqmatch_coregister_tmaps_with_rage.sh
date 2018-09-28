@@ -11,6 +11,9 @@ for isub in s201 s202 s203 s204 s205 s206 s209 s212 s214 s215 s216 s217 s221 s22
 				run_dir=${subj_dir}/$irun
 				echo $run_dir
 
+				# coregister tmaps with mprage
+				flirt -in $run_dir/stats/cond1ls_s_tval.nii.gz -ref $run_dir/reg/example_func.nii.gz -out cond1ls_s_tval_rage_space.nii.gz -init $run_dir/reg/example_func2highres.mat -applyxfm 
+
 
 		done
 		
