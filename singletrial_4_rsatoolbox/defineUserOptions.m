@@ -18,15 +18,15 @@ function userOptions = defineUserOptions()
 %% Project details
 
 % This name identifies a collection of files which all belong to the same run of a project.
-userOptions.analysisName = 'Glasser_sameVERB_TMAPS_5_2_18';
+userOptions.analysisName = 'seqmatch_betweenrun_FSrois_10_14_18';
 
 % This is the root directory of the project.
-userOptions.rootPath = '/Users/wbr/walter/fmri/sms_scan_analyses/rsa_singletrial/singletrial_4_rsatoolbox';
+userOptions.rootPath = '/Users/wbr/walter/fmri/seqmatch/wbr_analysisscripts/rsa_singletrial/singletrial_4_rsatoolbox';
 
 % The path leading to where the scans are stored (not including subject-specific identifiers).
 % "[[subjectName]]" should be used as a placeholder to denote an entry in userOptions.subjectNames
 % "[[betaIdentifier]]" should be used as a placeholder to denote an output of betaCorrespondence.m if SPM is not being used; or an arbitrary filename if SPM is being used.
-userOptions.betaPath = '/Users/wbr/walter/fmri/sms_scan_analyses/data_for_spm/getbetas_native_4_26_18/[[subjectName]]/SVDP_tmaps_4_rsa/[[betaIdentifier]]';
+userOptions.betaPath = '/Users/wbr/walter/fmri/seqmatch/Data_FSL/rsa_sc_same_item_reps/stick_function_one_reg/[[subjectName]]/tmap_4_rsa_singletrial/[[betaIdentifier]]';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% FEATURES OF INTEREST SELECTION OPTIONS %%
@@ -39,7 +39,7 @@ userOptions.betaPath = '/Users/wbr/walter/fmri/sms_scan_analyses/data_for_spm/ge
 	% The path to a stereotypical mask data file is stored (not including subject-specific identifiers).
 	% "[[subjectName]]" should be used as a placeholder to denote an entry in userOptions.subjectNames
 	% "[[maskName]]" should be used as a placeholder to denote an entry in userOptions.maskNames
-	userOptions.maskPath = '/Users/wbr/walter/fmri/sms_scan_analyses/data_for_spm/masks/[[subjectName]]/all_glass/[[maskName]]';
+	userOptions.maskPath = '/Users/wbr/walter/fmri/seqmatch/ROIs/freesurfer2/[[subjectName]]/corticalroi/[[maskName]]';
 		% beta_resampled_word_form_thresholded.nii
         
     % The list of mask filenames (minus .hdr extension) to be used.
@@ -47,17 +47,11 @@ userOptions.betaPath = '/Users/wbr/walter/fmri/sms_scan_analyses/data_for_spm/ge
 
 %%
 %            % FS and ANTS ROIs
-%            userOptions.maskNames = {'near_hipp_body_L' 'near_hipp_body_R' 'near_hipp_head_L'...
-%                'near_hipp_head_R' 'near_hipp_tail_L' 'near_hipp_tail_R' 'near_phc_ant_L' 'near_phc_ant_R'...
-%                'near_prc_L' 'near_prc_R' 'near_VMPFC' 'lh_ACC' 'lh_ANG' 'lh_MPFC' 'lh_PCC' 'lh_PHG' ...
-%                'lh_Prec' 'lh_RSC' 'lh_TPole' 'lh_VMPFC' 'lh_occ_pole' 'rh_ACC' 'rh_ANG' 'rh_MPFC' ...
-%                'rh_PCC' 'rh_PHG' 'rh_Prec' 'rh_RSC' 'rh_TPole' 'rh_VMPFC' 'rh_occ_pole'};
+           userOptions.maskNames = {'lh_ACC'; 'lh_ANG';'lh_FG';'lh_MPFC';'lh_OFC';'lh_PCC';...
+        'lh_Prec';'lh_RSC';'lh_TPole';'lh_VMPFC';'lh_VTC';...
+        'rh_ACC'; 'rh_ANG';'rh_FG';'rh_MPFC';'rh_OFC';'rh_PCC';...
+        'rh_Prec';'rh_RSC';'rh_TPole';'rh_VMPFC';'rh_VTC'};
 
-%%
-        % all native glasser ROIs
-        load('glass_roi_no_LHorRH.mat');
-%         load('glass_roi_names.mat');
-        userOptions.maskNames = y(2:end);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %% SEARCHLIGHT OPTIONS %%
@@ -82,7 +76,9 @@ userOptions.betaPath = '/Users/wbr/walter/fmri/sms_scan_analyses/data_for_spm/ge
 %%%%%%%%%%%%%%%%%%%%%%%%
 
 % The list of subjects to be included in the study.
-userOptions.subjectNames = {'s001' 's002' 's003' 's004' 's007' 's009' 's010' 's011' 's015' 's016' 's018' 's019' 's020' 's022' 's023' 's024' 's025'}; % 's008'
+userOptions.subjectNames = {'s201' 's202' 's203' 's204' 's205' 's206' 's209' 's212' 's214' ...
+                              's215' 's216' 's217' 's221' 's222' 's223' 's225' 's226' 's227' ...
+                              's228' 's231' 's232' 's234' 's235' 's236' 's237' 's238' 's239' 's240' 's241' 's242'};
 
 % The default colour label for RDMs corresponding to RoI masks (as opposed to models).
 userOptions.RoIColor = [0 0 1];
@@ -99,7 +95,7 @@ userOptions.getSPMData = false;
 %% First-order analysis
 
 % Text lables which may be attached to the conditions for MDS plots.
-[userOptions.conditionLabels{1:225}] = deal(1:225);
+[userOptions.conditionLabels{1:900}] = deal(1:900);
 % userOptions.conditionLabels = {'Intact'}; % 'S-F' 'S-R'};
 % userOptions.useAlternativeConditionLabels = false;
 

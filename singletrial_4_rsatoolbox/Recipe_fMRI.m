@@ -11,7 +11,7 @@
 clear all
 clc
 
-toolboxRoot = '/Users/Documents/Matlab/rsatoolbox'; addpath(genpath(toolboxRoot));
+toolboxRoot = '~/Documents/Matlab/rsatoolbox/'; addpath(genpath(toolboxRoot));
 userOptions = defineUserOptions();
 
 %%%%%%%%%%%%%%%%%%%%%%
