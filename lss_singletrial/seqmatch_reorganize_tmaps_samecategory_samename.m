@@ -35,7 +35,7 @@ fprintf('You beta reorganize!!\n\n')
 
 %--Loop over subjects
 
-for i = 1 % :length(subjects)
+for i = 2:length(subjects)
 
     % Define variables for individual subjects - General
     b.curSubj   = subjects{i};

@@ -18,7 +18,7 @@ function userOptions = defineUserOptions()
 %% Project details
 
 % This name identifies a collection of files which all belong to the same run of a project.
-userOptions.analysisName = 'seqmatch_betweenrun_FSrois_10_14_18';
+userOptions.analysisName = 'seqmatch_betweenrun_FSrois_samecategory_10_15_18';
 
 % This is the root directory of the project.
 userOptions.rootPath = '/Users/wbr/walter/fmri/seqmatch/wbr_analysisscripts/rsa_singletrial/singletrial_4_rsatoolbox';
@@ -26,7 +26,7 @@ userOptions.rootPath = '/Users/wbr/walter/fmri/seqmatch/wbr_analysisscripts/rsa_
 % The path leading to where the scans are stored (not including subject-specific identifiers).
 % "[[subjectName]]" should be used as a placeholder to denote an entry in userOptions.subjectNames
 % "[[betaIdentifier]]" should be used as a placeholder to denote an output of betaCorrespondence.m if SPM is not being used; or an arbitrary filename if SPM is being used.
-userOptions.betaPath = '/Users/wbr/walter/fmri/seqmatch/Data_FSL/rsa_sc_same_item_reps/stick_function_one_reg/[[subjectName]]/tmap_4_rsa_singletrial/[[betaIdentifier]]';
+userOptions.betaPath = '/Users/wbr/walter/fmri/seqmatch/Data_FSL/rsa_sc_same_item_reps/stick_function_one_reg/[[subjectName]]/tmap_4_rsa_singletrial_samecategory/[[betaIdentifier]]';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% FEATURES OF INTEREST SELECTION OPTIONS %%
