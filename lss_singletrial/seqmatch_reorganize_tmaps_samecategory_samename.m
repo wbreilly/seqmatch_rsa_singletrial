@@ -100,7 +100,10 @@ for i = 2:length(subjects)
             if strcmp(condition_sans_seqnum(itrial), 'SC')
                 for ipos = 1:5
                     [path,oldname,ext] = fileparts(b.rundir(irun).tmaps(itrial,:));
-                    newname = sprintf('%s_pos%d_rep%d_run%d.nii', item_sequence_type{itrial},ipos,irep,irun);
+%                     newname = sprintf('%s_pos%d_rep%d_run%d.nii', item_sequence_type{itrial},ipos,irep,irun);
+                    % label with condition at the end instead of the
+                    % begining for trial matrix order
+                    newname = sprintf('pos%d_%s_rep%d_run%02d.nii', ipos,item_sequence_type{itrial},irep,irun);
                     movefile(fullfile(path, [oldname, '.nii']), fullfile(b.betaDir, newname));
                     itrial = itrial + 1;
                 end
@@ -129,7 +132,10 @@ for i = 2:length(subjects)
                 
                 for ipos = 1:5
                     [path,oldname,ext] = fileparts(b.rundir(irun).tmaps(itrial,:));
-                    newname = sprintf('%s_pos%d_rep%d_run%d.nii', item_sequence_type{itrial},bidx(ipos),irep,irun); % notice that ipos an index now
+%                     newname = sprintf('%s_pos%d_rep%d_run%d.nii', item_sequence_type{itrial},bidx(ipos),irep,irun); % notice that ipos an index now
+                    % label with condition at the end instead of the
+                    % begining for trial matrix order
+                    newname = sprintf('pos%d_%s_rep%d_run%02d.nii', bidx(ipos),item_sequence_type{itrial},irep,irun);
                     movefile(fullfile(path, [oldname, '.nii']), fullfile(b.betaDir, newname));
                     itrial = itrial + 1;
                 end

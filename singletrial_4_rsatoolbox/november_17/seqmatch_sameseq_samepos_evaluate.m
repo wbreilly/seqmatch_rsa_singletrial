@@ -5,19 +5,20 @@ clc
 %% setup and create text file
 
 % analysis name
-% analysis = 'FS_ANTS_samePOS_allps_TMAP_5_1_18_7.5ptile';
-analysis = 'Glasser_samePOS_allps_tmap_5_2_18_7.5ptile';
+analysis = '';
 % you know who
-subjects = {'s001' 's002' 's003' 's004' 's007' 's008' 's009' 's010' 's011' 's015' 's016' 's018' 's019' 's020' 's022' 's023' 's024' 's025'}; 
+subjects = {'s201' 's202' 's203' 's204' 's205' 's206' 's209' 's212' 's214' ...
+                              's215' 's216' 's217' 's221' 's222' 's223' 's225' 's226' 's227' ...
+                              's228' 's231' 's232' 's234' 's235' 's236' 's237' 's238' 's239' 's240' 's241' 's242'};
+
 % load the RSA matrices     
-% load('/Users/wbr/walter/fmri/sms_scan_analyses/rsa_singletrial/singletrial_4_rsatoolbox/RDMs/FS_ANTS_samePOS_TMAPS_4_30_18_RDMs.mat');
-% load('/Users/wbr/walter/fmri/sms_scan_analyses/rsa_singletrial/singletrial_4_rsatoolbox/RDMs/FS_ANTS_samePOS_betas_4_27_18_RDMs.mat');
-load('/Users/wbr/walter/fmri/sms_scan_analyses/rsa_singletrial/singletrial_4_rsatoolbox/RDMs/Glasser_samePOS_TMAPS_5_2_18_RDMs.mat');
+load('/Users/wbr/walter/fmri/seqmatch/wbr_analysisscripts/rsa_singletrial/singletrial_4_rsatoolbox/RDMs/seqmatch_betweenrun_FSrois_samecategory_10_15_18_RDMs.mat');
 
 % load mask
-load('SVSS_allps.mat')
+load('seqmtch_bt_run_mask.mat')
+
 %path to bad betas
-bad_beta_path = '/Users/wbr/walter/fmri/sms_scan_analyses/data_for_spm/getbetas_native_4_26_18_duplicate';
+% what bad betas?
 
 % setup txt to write results into with subject and analysis names
 analysis_dat = sprintf('RSAmeans_%s.txt', analysis);
@@ -47,20 +48,13 @@ for iname = 1:size(RDMs,1)
     ROIs{end+1} = roi_name;
 end 
 
-load('SVSS_allps.mat')
-
 for ipos = 1:5
     % load mask
     mask = SVSS_allps(ipos).masks;
     
     %% loop through each sub
     for iRDM = 1:size(RDMs,2)
-        
-        % load up the bad beta identifiers
-        beta_txt = fullfile(bad_beta_path,subjects{iRDM}, 'tmap_4_rsa_singletrial', 'SVSS_tmap_7.5ptile_5_18.txt');
-%         beta_txt = fullfile(bad_beta_path,subjects{iRDM}, 'beta_4_rsa_singletrial', 'SVSS_betas_7.5ptile_5_18.txt');
-        bad_betas = textread(beta_txt);
-%         bad_betas = [];
+
 
         % loop through each roi
         for iroi = 1:size(RDMs,1) 
