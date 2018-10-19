@@ -5,7 +5,7 @@ clc
 %% setup and create text file
 
 % analysis name
-analysis = '';
+analysis = '10_17_18_preliminary_betweenrun_betweensequence';
 % you know who
 subjects = {'s201' 's202' 's203' 's204' 's205' 's206' 's209' 's212' 's214' ...
                               's215' 's216' 's217' 's221' 's222' 's223' 's225' 's226' 's227' ...
@@ -123,118 +123,117 @@ end
             % convert to similarity, UNLESS USING COSINE
             x = 1-x;
             %% 
-            for imask = 1:3
-                % set masks
-                mask1 = all_between_seq_bigmask;
-                mask2 = between_learnedonly_seq_bigmask;
-                mask3 = between_added_and_learned_seq_bigmask;
-                
-                % mask
-                x_vec1 = x(mask1); %length of x_vec1 is 16200. 1080(within condition and positino)*5(positions)*3(conditions).
-                x_vec2 = x(mask2);
-                x_vec3 = x(mask3);
-                % can use below to check appearance of masked data
-                % x_org = x.*SVSS;
+            % set masks
+            mask1 = all_between_seq_bigmask;
+            mask2 = between_learnedonly_seq_bigmask;
+            mask3 = between_added_and_learned_seq_bigmask;
 
-                %% pull out values for each condition and position for mask1
-                % do this to check elements in vec of single mask chunk (within condition and position but between diff seuqences)
-                % check = mask(1:60,1:60);
-                % sum(sum(check))
-                % it's 1080 for all_between_seq_bigmask
-                %1080*3 = 3240 % steps between positions for each condition
-                %for all_between_seq_bigmask
-                R_data1 = [];
-                start_val = 1:3240:16200;
-                for ival = 1:length(start_val) 
-                    R_data1 = [R_data1 x_vec1(start_val(ival):start_val(ival)+1079)];
-                end
-                
-                SC_data1 = [];
-                start_val = 1081:3240:16200;
-                for ival = 1:length(start_val) 
-                    SC_data1 = [SC_data1 x_vec1(start_val(ival):start_val(ival)+1079)];
-                end
-                
-                SI_data1 = [];
-                start_val = 2161:3240:16200;
-                for ival = 1:length(start_val) 
-                    SI_data1 = [SI_data1 x_vec1(start_val(ival):start_val(ival)+1079)];
-                end
-                
-                %% mask2
-                %check = mask2(1:60,1:60);
-                % sum(sum(check)) = 360 because only comparing 2 learned
-                % sequences. 1/3 of above where there are 3 intersequnece
-                % comparisons instead of one.
-                
-                R_data2 = [];
-                start_val = 1:1080:5400;
-                for ival = 1:length(start_val) 
-                    R_data2 = [R_data2 x_vec2(start_val(ival):start_val(ival)+359)];
-                end
-                
-                SC_data2 = [];
-                start_val = 361:1080:5400;
-                for ival = 1:length(start_val) 
-                    SC_data2 = [SC_data2 x_vec2(start_val(ival):start_val(ival)+359)];
-                end
-                
-                SI_data2 = [];
-                start_val = 721:1080:5400;
-                for ival = 1:length(start_val) 
-                    SI_data2 = [SI_data2 x_vec2(start_val(ival):start_val(ival)+359)];
-                end
-                
-                %% mask3
-                % 720 because there are 2/3 between seq comparisons here
-                
-                R_data3 = [];
-                start_val = 1:2160:10800;
-                for ival = 1:length(start_val) 
-                    R_data3 = [R_data3 x_vec3(start_val(ival):start_val(ival)+719)];
-                end
-                
-                SC_data3 = [];
-                start_val = 721:2160:10800;
-                for ival = 1:length(start_val) 
-                    SC_data3 = [SC_data3 x_vec3(start_val(ival):start_val(ival)+719)];
-                end
-                
-                SI_data3 = [];
-                start_val = 1441:2160:10800;
-                for ival = 1:length(start_val) 
-                    SI_data3 = [SI_data3 x_vec3(start_val(ival):start_val(ival)+719)];
-                end
-                %% mean them
-                
-                R_data1_mean = nanmean(R_data1);
-                SC_data1_mean = nanmean(SC_data1);
-                SI_data1_mean = nanmean(SI_data1);
-                
-                R_data2_mean = nanmean(R_data2);
-                SC_data2_mean = nanmean(SC_data2);
-                SI_data2_mean = nanmean(SI_data2);
-                
-                R_data3_mean = nanmean(R_data3);
-                SC_data3_mean = nanmean(SC_data3);
-                SI_data3_mean = nanmean(SI_data3);
-                
-                
-                %%
-                for ipos = 1:5
-                    fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi},'R_all', ipos, R_data1_mean(ipos));
-                    fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi}, 'SC_all', ipos, SC_data1_mean(ipos));
-                    fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi}, 'SI_all', ipos, SI_data1_mean(ipos));
-                    
-                    fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi},'R_learned', ipos, R_data2_mean(ipos));
-                    fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi}, 'SC_learned', ipos, SC_data2_mean(ipos));
-                    fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi}, 'SI_learned', ipos, SI_data2_mean(ipos));
-                    
-                    fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi},'R_added', ipos, R_data3_mean(ipos));
-                    fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi}, 'SC_added', ipos, SC_data3_mean(ipos));
-                    fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi}, 'SI_added', ipos, SI_data3_mean(ipos));
-                end
-            end %imask
+            % mask
+            x_vec1 = x(mask1); %length of x_vec1 is 16200. 1080(within condition and positino)*5(positions)*3(conditions).
+            x_vec2 = x(mask2);
+            x_vec3 = x(mask3);
+            % can use below to check appearance of masked data
+            % x_org = x.*SVSS;
+
+            %% pull out values for each condition and position for mask1
+            % do this to check elements in vec of single mask chunk (within condition and position but between diff seuqences)
+            % check = mask(1:60,1:60);
+            % sum(sum(check))
+            % it's 1080 for all_between_seq_bigmask
+            %1080*3 = 3240 % steps between positions for each condition
+            %for all_between_seq_bigmask
+            R_data1 = [];
+            start_val = 1:3240:16200;
+            for ival = 1:length(start_val) 
+                R_data1 = [R_data1 x_vec1(start_val(ival):start_val(ival)+1079)];
+            end
+
+            SC_data1 = [];
+            start_val = 1081:3240:16200;
+            for ival = 1:length(start_val) 
+                SC_data1 = [SC_data1 x_vec1(start_val(ival):start_val(ival)+1079)];
+            end
+
+            SI_data1 = [];
+            start_val = 2161:3240:16200;
+            for ival = 1:length(start_val) 
+                SI_data1 = [SI_data1 x_vec1(start_val(ival):start_val(ival)+1079)];
+            end
+
+            %% mask2
+            %check = mask2(1:60,1:60);
+            % sum(sum(check)) = 360 because only comparing 2 learned
+            % sequences. 1/3 of above where there are 3 intersequnece
+            % comparisons instead of one.
+
+            R_data2 = [];
+            start_val = 1:1080:5400;
+            for ival = 1:length(start_val) 
+                R_data2 = [R_data2 x_vec2(start_val(ival):start_val(ival)+359)];
+            end
+
+            SC_data2 = [];
+            start_val = 361:1080:5400;
+            for ival = 1:length(start_val) 
+                SC_data2 = [SC_data2 x_vec2(start_val(ival):start_val(ival)+359)];
+            end
+
+            SI_data2 = [];
+            start_val = 721:1080:5400;
+            for ival = 1:length(start_val) 
+                SI_data2 = [SI_data2 x_vec2(start_val(ival):start_val(ival)+359)];
+            end
+
+            %% mask3
+            % 720 because there are 2/3 between seq comparisons here
+
+            R_data3 = [];
+            start_val = 1:2160:10800;
+            for ival = 1:length(start_val) 
+                R_data3 = [R_data3 x_vec3(start_val(ival):start_val(ival)+719)];
+            end
+
+            SC_data3 = [];
+            start_val = 721:2160:10800;
+            for ival = 1:length(start_val) 
+                SC_data3 = [SC_data3 x_vec3(start_val(ival):start_val(ival)+719)];
+            end
+
+            SI_data3 = [];
+            start_val = 1441:2160:10800;
+            for ival = 1:length(start_val) 
+                SI_data3 = [SI_data3 x_vec3(start_val(ival):start_val(ival)+719)];
+            end
+            %% mean them
+
+            R_data1_mean = nanmean(R_data1);
+            SC_data1_mean = nanmean(SC_data1);
+            SI_data1_mean = nanmean(SI_data1);
+
+            R_data2_mean = nanmean(R_data2);
+            SC_data2_mean = nanmean(SC_data2);
+            SI_data2_mean = nanmean(SI_data2);
+
+            R_data3_mean = nanmean(R_data3);
+            SC_data3_mean = nanmean(SC_data3);
+            SI_data3_mean = nanmean(SI_data3);
+
+
+            %%
+            for ipos = 1:5
+                fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi},'R_all', ipos, R_data1_mean(ipos));
+                fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi}, 'SC_all', ipos, SC_data1_mean(ipos));
+                fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi}, 'SI_all', ipos, SI_data1_mean(ipos));
+
+                fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi},'R_learned', ipos, R_data2_mean(ipos));
+                fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi}, 'SC_learned', ipos, SC_data2_mean(ipos));
+                fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi}, 'SI_learned', ipos, SI_data2_mean(ipos));
+
+                fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi},'R_added', ipos, R_data3_mean(ipos));
+                fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi}, 'SC_added', ipos, SC_data3_mean(ipos));
+                fprintf(fid_study,'%s %s %s %d %.5f\n', subjects{iRDM}, ROIs{iroi}, 'SI_added', ipos, SI_data3_mean(ipos));
+            end
+            
         end % end iroi
     end %end iRDM
 % end % end ipos

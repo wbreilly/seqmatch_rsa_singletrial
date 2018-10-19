@@ -1,0 +1,187 @@
+---
+title: "seqmatch_rsa_stats_10_18_18"
+author: "WBR"
+date: "10/18/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# knitr::opts_chunk$set(out.width = "70%")
+```
+
+## Load and prepare data 
+
+```{r}
+# RSA sum stats
+library(tidyverse)
+library(afex)
+
+# load data
+rsa = read.table("/Users/wbr/walter/fmri/seqmatch/wbr_analysisscripts/rsa_singletrial/singletrial_4_rsatoolbox/november_17/RSA_10_17_18_preliminary_betweenrun_betweensequence.txt", header = TRUE, stringsAsFactors = TRUE)
+```
+
+```{r}
+# the rois
+PM_rois = c('lh-ANG','rh-ANG','lh-PCC','rh-PCC','lh-Prec','rh-Prec','lh-RSC','rh-RSC','lh-MPFC','rh-MPFC')
+AT_rois = c('lh-FG','rh-FG','lh-OFC','rh-OFC','lh-TPole','rh-TPole','lh-VTC','rh-VTC')
+
+
+# make networks factor
+# first make logical vectors for member regions
+rsa$PM = rsa$roi %in% PM_rois
+rsa$AT = rsa$roi %in% AT_rois
+
+# now assign group label in single column
+rsa$roi_group = ifelse(rsa$PM == TRUE, "PM", ifelse(rsa$AT ==TRUE, "AT", "Other"))
+# delete the logical vectors
+rsa[,6:7] = NULL
+# make group a factor
+rsa$roi_group = as.factor(rsa$roi_group)
+
+```
+
+```{r}
+val = c(1,2,3)
+ rsa$condition = factor(rsa$condition, levels = rsa$condition[order(val)])
+```
+
+
+```{r fig.width = 12, fig.asp = .62}
+clust.fig.dat = rsa %>% group_by(sub,condition,roi_group) %>% summarise(similarity = mean(similarity))
+clust.fig.dat =  clust.fig.dat %>%  filter(roi_group != "Other")
+clust.fig.dat =  clust.fig.dat %>%  filter(condition == "R_learned" | condition == "SC_learned" | condition == "SI_learned")
+clusters.rois = ggplot(data = clust.fig.dat, aes(x = factor(condition), y = similarity))  + geom_boxplot(outlier.shape = NA)  +  facet_wrap( ~roi_group) + scale_y_continuous(limits = c(0, .2))
+clusters.rois = clusters.rois + ylab("Similarity") + theme(text = element_text(size = 30, face = "bold"),axis.title.x=element_blank(),axis.text.x=element_text(angle = -90,hjust = 0))
+clusters.rois
+```
+
+
+
+```{r fig.width = 12, fig.asp = .62}
+clust.fig.dat = rsa %>%  filter(roi_group == "PM") %>% group_by(sub,condition,roi) %>% summarise(similarity = mean(similarity))
+clust.fig.dat =  clust.fig.dat %>%  filter(condition == "R_learned" | condition == "SC_learned" | condition == "SI_learned")
+cond.rois = ggplot(data = clust.fig.dat, aes(x = factor(condition), y = similarity))  + geom_boxplot(outlier.shape = NA) + scale_y_continuous(limits = c(0, .2)) +  facet_wrap( ~roi, ncol=5)
+cond.rois = cond.rois + ylab("Similarity") + theme(text = element_text(size = 30, face = "bold"),axis.title.x=element_blank(),axis.text.x=element_text(angle = -45,hjust = 0)) 
+cond.rois
+```
+
+```{r fig.width = 12, fig.asp = .62}
+clust.fig.dat = rsa %>%  filter(roi_group == "AT") %>% group_by(sub,condition,roi) %>% summarise(similarity = mean(similarity))
+clust.fig.dat =  clust.fig.dat %>%  filter(condition == "R_learned" | condition == "SC_learned" | condition == "SI_learned")
+cond.rois = ggplot(data = clust.fig.dat, aes(x = factor(condition), y = similarity))  + geom_boxplot(outlier.shape = NA) + scale_y_continuous(limits = c(0, .2)) +  facet_wrap( ~roi, ncol=4)
+cond.rois = cond.rois + ylab("Similarity") + theme(text = element_text(size = 30, face = "bold"),axis.title.x=element_blank(),axis.text.x=element_text(angle = -45,hjust = 0)) 
+cond.rois
+```
+
+
+
+```{r fig.width = 12, fig.asp = .62}
+clust.fig.dat = rsa %>% group_by(sub,condition,roi_group) %>% summarise(similarity = mean(similarity))
+clust.fig.dat =  clust.fig.dat %>%  filter(roi_group != "Other")
+clust.fig.dat =  clust.fig.dat %>%  filter(condition == "R_added" | condition == "SC_added" | condition == "SI_added")
+clusters.rois = ggplot(data = clust.fig.dat, aes(x = factor(condition), y = similarity))  + geom_boxplot(outlier.shape = NA)  +  facet_wrap( ~roi_group) + scale_y_continuous(limits = c(0, .2))
+clusters.rois = clusters.rois + ylab("Similarity") + theme(text = element_text(size = 30, face = "bold"),axis.title.x=element_blank(),axis.text.x=element_text(angle = -90,hjust = 0))
+clusters.rois
+```
+
+```{r fig.width = 12, fig.asp = .62}
+clust.fig.dat = rsa %>%  filter(roi_group == "PM") %>% group_by(sub,condition,roi) %>% summarise(similarity = mean(similarity))
+clust.fig.dat =  clust.fig.dat %>%  filter(condition == "R_added" | condition == "SC_added" | condition == "SI_added")
+cond.rois = ggplot(data = clust.fig.dat, aes(x = factor(condition), y = similarity))  + geom_boxplot(outlier.shape = NA) + scale_y_continuous(limits = c(0, .2)) +  facet_wrap( ~roi, ncol=5)
+cond.rois = cond.rois + ylab("Similarity") + theme(text = element_text(size = 30, face = "bold"),axis.title.x=element_blank(),axis.text.x=element_text(angle = -45,hjust = 0)) 
+cond.rois
+```
+```{r fig.width = 12, fig.asp = .62}
+clust.fig.dat = rsa %>%  filter(roi_group == "AT") %>% group_by(sub,condition,roi) %>% summarise(similarity = mean(similarity))
+clust.fig.dat =  clust.fig.dat %>%  filter(condition == "R_added" | condition == "SC_added" | condition == "SI_added")
+cond.rois = ggplot(data = clust.fig.dat, aes(x = factor(condition), y = similarity))  + geom_boxplot(outlier.shape = NA) + scale_y_continuous(limits = c(0, .2)) +  facet_wrap( ~roi, ncol=4)
+cond.rois = cond.rois + ylab("Similarity") + theme(text = element_text(size = 30, face = "bold"),axis.title.x=element_blank(),axis.text.x=element_text(angle = -45,hjust = 0)) 
+cond.rois
+```
+
+
+
+
+```{r}
+rsa.m1 = rsa %>% filter(roi_group != "Other")
+rsa.m1 = rsa.m1 %>% filter(condition == "R_learned" | condition == "SC_learned" | condition == "SI_learned")
+m1 = aov_ez("sub", "similarity", rsa.m1, within = c("condition", "roi_group"))
+m1
+ls.m1 = lsmeans(m1,~condition|roi_group,contr = "pairwise", adjust = NULL)
+ls.m1
+contrast(ls.m1, alpha=0.05, method="pairwise", adjust= "holm")
+```
+
+```{r}
+rsa.m1 = rsa %>% filter(roi_group != "Other")
+rsa.m1 = rsa.m1 %>% filter(condition == "R_added" | condition == "SC_added" | condition == "SI_added")
+m1 = aov_ez("sub", "similarity", rsa.m1, within = c("condition", "roi_group"))
+m1
+ls.m1 = lsmeans(m1,~condition|roi_group,contr = "pairwise", adjust = NULL)
+ls.m1
+contrast(ls.m1, alpha=0.05, method="pairwise", adjust= "holm")
+```
+
+```{r}
+rsa.m1 = rsa %>% filter(roi_group != "Other")
+rsa.m1 = rsa.m1 %>% filter(condition == "R_learned" | condition == "SC_learned" | condition == "SI_learned")
+m1 = aov_ez("sub", "similarity", rsa.m1, within = c("condition", "roi"))
+m1
+ls.m1 = lsmeans(m1,~condition|roi,contr = "pairwise", adjust = NULL)
+# ls.m1
+contrast(ls.m1, alpha=0.05, method="pairwise", adjust= "holm")
+```
+
+```{r}
+rsa.m1 = rsa %>% filter(roi_group != "Other")
+rsa.m1 = rsa.m1 %>% filter(condition == "R_added" | condition == "SC_added" | condition == "SI_added")
+m1 = aov_ez("sub", "similarity", rsa.m1, within = c("condition", "roi"))
+m1
+ls.m1 = lsmeans(m1,~condition|roi,contr = "pairwise", adjust = NULL)
+# ls.m1
+contrast(ls.m1, alpha=0.05, method="pairwise", adjust= "holm")
+```
+
+```{r}
+rsa.m1 = rsa %>% filter(roi_group != "Other")
+rsa.m1 = rsa.m1 %>% filter(roi == "lh-PCC" | roi == "rh-PCC")
+rsa.m1 = rsa.m1 %>% filter(condition == "R_learned" | condition == "SC_learned" | condition == "SI_learned")
+m1 = aov_ez("sub", "similarity", rsa.m1, within = c("condition"))
+m1
+ls.m1 = lsmeans(m1,~condition,contr = "pairwise", adjust = NULL)
+ls.m1
+contrast(ls.m1, alpha=0.05, method="pairwise", adjust= "holm")
+```
+```{r}
+rsa.m1 = rsa %>% filter(roi_group != "Other")
+rsa.m1 = rsa.m1 %>% filter(roi == "lh-PCC" | roi == "rh-PCC")
+rsa.m1 = rsa.m1 %>% filter(condition == "R_added" | condition == "SC_added" | condition == "SI_added")
+m1 = aov_ez("sub", "similarity", rsa.m1, within = c("condition"))
+m1
+ls.m1 = lsmeans(m1,~condition,contr = "pairwise", adjust = NULL)
+ls.m1
+contrast(ls.m1, alpha=0.05, method="pairwise", adjust= "holm")
+```
+
+```{r}
+rsa.m1 = rsa %>% filter(roi_group != "Other")
+rsa.m1 = rsa.m1 %>% filter(roi == "lh-Prec" | roi == "rh-Prec")
+rsa.m1 = rsa.m1 %>% filter(condition == "R_learned" | condition == "SC_learned" | condition == "SI_learned")
+m1 = aov_ez("sub", "similarity", rsa.m1, within = c("condition"))
+m1
+ls.m1 = lsmeans(m1,~condition,contr = "pairwise", adjust = NULL)
+ls.m1
+contrast(ls.m1, alpha=0.05, method="pairwise", adjust= "holm")
+```
+
+```{r}
+rsa.m1 = rsa %>% filter(roi_group != "Other")
+rsa.m1 = rsa.m1 %>% filter(roi == "lh-Prec" | roi == "rh-Prec")
+rsa.m1 = rsa.m1 %>% filter(condition == "R_added" | condition == "SC_added" | condition == "SI_added")
+m1 = aov_ez("sub", "similarity", rsa.m1, within = c("condition"))
+m1
+ls.m1 = lsmeans(m1,~condition,contr = "pairwise", adjust = NULL)
+ls.m1
+contrast(ls.m1, alpha=0.05, method="pairwise", adjust= "holm")
+```
