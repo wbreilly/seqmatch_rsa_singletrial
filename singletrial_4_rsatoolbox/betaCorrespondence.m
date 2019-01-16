@@ -31,7 +31,7 @@ x = spm_select('ExtFPListRec', dir, '^*\.nii');
 % need to remove first beta, a duplicate, if using non-resliced betas
 % x = x(2:end,:);
 
-
+betas = struct;
 
 for i = 1:size(x,1)
     [q w e] = fileparts(x(i,:));

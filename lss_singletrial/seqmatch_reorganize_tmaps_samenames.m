@@ -57,10 +57,10 @@ for i = 1:length(subjects)
 
         % split 4d nii into 90 3d nii's cuz SPM. Looks like this will just
         % overwrite if it has run already
-        spm_file_split(sprintf('%scond1ls_s_tval.nii',runDir{1}));
+        spm_file_split(sprintf('%sreslice_cond1ls_s_tval.nii',runDir{1}));
 
         % get tmaps
-        b.rundir(irun).tmaps = spm_select('ExtFPListRec', runDir, 'cond1ls_s_tval_0.*.nii');
+        b.rundir(irun).tmaps = spm_select('ExtFPListRec', runDir, 'reslice_cond1ls_s_tval_0.*.nii');
 
         %% going to effectively loop through all the trials but need some
         % counters to get position and rep right
@@ -76,7 +76,8 @@ for i = 1:length(subjects)
             % position var
             for ipos = 1:5
                 [path,oldname,ext] = fileparts(b.rundir(irun).tmaps(itrial,:));
-                newname = sprintf('%s_pos%d_rep%d_run%d.nii', item_sequence_type{itrial},ipos,irep,irun);
+                
+                newname = sprintf('pos%d_%s_rep%d_run%02d.nii', ipos,item_sequence_type{itrial},irep,irun);
                 movefile(fullfile(path, [oldname, '.nii']), fullfile(b.betaDir, newname));
                 itrial = itrial + 1;
             end

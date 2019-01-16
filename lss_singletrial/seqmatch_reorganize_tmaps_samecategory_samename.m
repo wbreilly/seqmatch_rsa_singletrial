@@ -35,7 +35,7 @@ fprintf('You beta reorganize!!\n\n')
 
 %--Loop over subjects
 
-for i = 2:length(subjects)
+for i = 1:length(subjects)
 
     % Define variables for individual subjects - General
     b.curSubj   = subjects{i};
@@ -77,10 +77,11 @@ for i = 2:length(subjects)
 
         % split 4d nii into 90 3d nii's cuz SPM. Looks like this will just
         % overwrite if it has run already
-        spm_file_split(sprintf('%scond1ls_s_tval.nii',runDir{1}));
+        spm_file_split(sprintf('%sreslice_cond1ls_s_tval.nii',runDir{1}));
 
         % get tmaps
-        b.rundir(irun).tmaps = spm_select('ExtFPListRec', runDir, 'cond1ls_s_tval_0.*.nii');
+        b.rundir(irun).tmaps = spm_select('ExtFPListRec', runDir, 'reslice_cond1ls_s_tval_0.*.nii');
+        
 
         %% going to effectively loop through all the trials but need some
         % counters to get position and rep right

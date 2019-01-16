@@ -22,13 +22,13 @@
 %          1     1     1     1     1     1     1     1     1     0     1     1     1     1     1     1     1     1     1     0];   
      
 
-small = all_between_seq_smallmask;
-small = between_added_and_learned_seq_smallmask;
-small = between_learnedonly_seq_smallmask;
+% small = all_between_seq_smallmask;
+% small = between_added_and_learned_seq_smallmask;
+% small = between_learnedonly_seq_smallmask;
 
 
 
-
+% small = between_conditions_small;
 
 
 
@@ -60,5 +60,5 @@ end % end iwin
 
 
 mask = big;
-between_learnedonly_seq_bigmask = logical(mask);
+between_seq_bigmask = logical(mask);
 save('seqmtch_bt_run_mask.mat', 'mask');

@@ -5,14 +5,15 @@ clc
 %% setup and create text file
 
 % analysis name
-analysis = '10_17_18_preliminary_betweenrun_betweensequence';
+analysis = '12_4_18_samePos_occ';
 % you know who
 subjects = {'s201' 's202' 's203' 's204' 's205' 's206' 's209' 's212' 's214' ...
                               's215' 's216' 's217' 's221' 's222' 's223' 's225' 's226' 's227' ...
                               's228' 's231' 's232' 's234' 's235' 's236' 's237' 's238' 's239' 's240' 's241' 's242'};
 
 % load the RSA matrices     
-load('/Users/wbr/walter/fmri/seqmatch/wbr_analysisscripts/rsa_singletrial/singletrial_4_rsatoolbox/RDMs/seqmatch_betweenrun_FSrois_samecategory_10_16_18_RDMs.mat');
+% load('/Users/wbr/walter/fmri/seqmatch/wbr_analysisscripts/rsa_singletrial/singletrial_4_rsatoolbox/RDMs/seqmatch_betweenrun_FSrois_samecategory_11_14_18_RDMs.mat');
+load('/Users/wbr/walter/fmri/seqmatch/wbr_analysisscripts/rsa_singletrial/singletrial_4_rsatoolbox/RDMs/seqmatch_betweenrun_FSrois_sameposition_11_28_18_RDMs.mat');% 
 
 % load mask
 load('seqmatch_between_run_masks.mat')
